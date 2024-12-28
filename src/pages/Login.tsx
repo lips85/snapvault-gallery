@@ -1,82 +1,44 @@
-import { useState } from "react";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement actual login logic
-    if (email && password) {
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      });
-      navigate("/dashboard");
-    } else {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields",
-        variant: "destructive",
-      });
-    }
-  };
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        navigate("/dashboard");
+      }
+    });
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md space-y-8 p-8 bg-card rounded-lg shadow-lg animate-fadeIn">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground">Welcome back</h2>
+          <h2 className="text-3xl font-bold text-foreground">SnapVault</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Sign in to access your photos
+            현장 사진을 관리하세요
           </p>
         </div>
-        <form onSubmit={handleLogin} className="mt-8 space-y-6">
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                Email address
-              </label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="mt-1"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-foreground">
-                Password
-              </label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="mt-1"
-                required
-              />
-            </div>
-          </div>
-          <Button type="submit" className="w-full">
-            Sign in
-          </Button>
-        </form>
-        <div className="mt-4 text-center">
-          <a href="#" className="text-sm text-primary hover:underline">
-            Forgot your password?
-          </a>
-        </div>
+        <Auth
+          supabaseClient={supabase}
+          appearance={{
+            theme: ThemeSupa,
+            variables: {
+              default: {
+                colors: {
+                  brand: '#000000',
+                  brandAccent: '#333333',
+                }
+              }
+            }
+          }}
+          providers={[]}
+        />
       </div>
     </div>
   );
