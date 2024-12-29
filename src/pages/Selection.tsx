@@ -7,28 +7,25 @@ const Selection = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md space-y-8 p-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground">SnapVault</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            원하시는 작업을 선택해주세요
-          </p>
-        </div>
-        <div className="space-y-4">
+      <div className="w-full max-w-5xl p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex flex-col items-center justify-center p-8 border rounded-lg hover:border-foreground transition-colors">
           <Button
             onClick={() => navigate("/upload")}
-            className="w-full h-16 text-lg"
+            className="w-full h-32 text-lg"
             variant="outline"
           >
-            <Camera className="mr-2 h-6 w-6" />
+            <Camera className="mr-2 h-12 w-12" />
             사진 올리기
           </Button>
+        </div>
+        
+        <div className="flex flex-col items-center justify-center p-8 border rounded-lg hover:border-foreground transition-colors">
           <Button
             onClick={() => navigate("/dashboard")}
-            className="w-full h-16 text-lg"
+            className="w-full h-32 text-lg"
             variant="outline"
           >
-            <LayoutGrid className="mr-2 h-6 w-6" />
+            <LayoutGrid className="mr-2 h-12 w-12" />
             사진 갤러리
           </Button>
         </div>

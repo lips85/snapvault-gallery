@@ -22,6 +22,16 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
   const [process, setProcess] = useState("");
   const [details, setDetails] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
 
   const handleUpload = async () => {
     if (!selectedImage || !siteName || !inspectionDate || !location || !process || !details) {
@@ -69,13 +79,13 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
         description: "사진이 업로드되었습니다.",
       });
 
-      // Reset form and close dialog
       setSiteName("");
       setInspectionDate("");
       setLocation("");
       setProcess("");
       setDetails("");
       setSelectedImage(null);
+      setPreviewUrl(null);
       onSuccess();
       onClose();
 
@@ -98,7 +108,29 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="site">현장명</Label>
+            <Label htmlFor="image" className="flex items-center">
+              사진 <span className="text-red-500 ml-1">*</span>
+            </Label>
+            <Input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImageSelect}
+            />
+            {previewUrl && (
+              <div className="mt-2 relative aspect-video">
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className="rounded-lg object-cover w-full h-full"
+                />
+              </div>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="site" className="flex items-center">
+              현장명 <span className="text-red-500 ml-1">*</span>
+            </Label>
             <Input
               id="site"
               value={siteName}
@@ -107,7 +139,9 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="date">점검일자</Label>
+            <Label htmlFor="date" className="flex items-center">
+              점검일자 <span className="text-red-500 ml-1">*</span>
+            </Label>
             <Input
               id="date"
               type="date"
@@ -116,7 +150,9 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="location">점검위치</Label>
+            <Label htmlFor="location" className="flex items-center">
+              점검위치 <span className="text-red-500 ml-1">*</span>
+            </Label>
             <Input
               id="location"
               value={location}
@@ -125,7 +161,9 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="process">공정</Label>
+            <Label htmlFor="process" className="flex items-center">
+              공정 <span className="text-red-500 ml-1">*</span>
+            </Label>
             <Input
               id="process"
               value={process}
@@ -134,21 +172,14 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="details">세부내용</Label>
+            <Label htmlFor="details" className="flex items-center">
+              세부내용 <span className="text-red-500 ml-1">*</span>
+            </Label>
             <Textarea
               id="details"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               placeholder="세부내용을 입력하세요"
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="image">사진</Label>
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
             />
           </div>
           <Button onClick={handleUpload} disabled={isUploading}>
