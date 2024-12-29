@@ -8,11 +8,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    // Check current session on component mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         navigate("/selection");
       }
     });
+
+    // Listen for auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        navigate("/selection");
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
   return (
