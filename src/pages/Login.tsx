@@ -37,20 +37,26 @@ const Login = () => {
               }
             }
           }}
+          providers={["google", "github"]}
           localization={{
             variables: {
               sign_up: {
                 email_label: '이메일',
                 password_label: '비밀번호',
                 button_label: '회원가입',
+                link_text: '계정이 없으신가요? 회원가입하기',
+                confirmation_text: '이메일을 확인해주세요',
               },
               sign_in: {
                 email_label: '이메일',
                 password_label: '비밀번호',
                 button_label: '로그인',
+                link_text: '이미 계정이 있으신가요? 로그인하기',
               },
             },
           }}
+          view="sign_in"
+          showLinks={true}
         />
       </div>
     </div>
