@@ -1,4 +1,4 @@
-import { Search, Upload, LogOut } from "lucide-react";
+import { Search, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 interface NavigationProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  openUploadDialog: () => void;
+  openUploadDialog?: () => void;  // 선택적 prop으로 변경
 }
 
-export const Navigation = ({ searchQuery, setSearchQuery, openUploadDialog }: NavigationProps) => {
+export const Navigation = ({ searchQuery, setSearchQuery }: NavigationProps) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -42,10 +42,6 @@ export const Navigation = ({ searchQuery, setSearchQuery, openUploadDialog }: Na
             </div>
           </div>
           <div className="flex-1 flex justify-end space-x-4">
-            <Button variant="outline" onClick={openUploadDialog}>
-              <Upload className="h-4 w-4 mr-2" />
-              업로드
-            </Button>
             <Button variant="ghost" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
             </Button>
