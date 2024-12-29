@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Navigation } from "@/components/dashboard/Navigation";
-import { PhotoUploadDialog } from "@/components/dashboard/PhotoUploadDialog";
 import { PhotoGrid } from "@/components/dashboard/PhotoGrid";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 
@@ -19,9 +18,8 @@ interface Photo {
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
 
-  const { data: photos, refetch } = useQuery({
+  const { data: photos } = useQuery({
     queryKey: ['photos'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -52,7 +50,6 @@ const Dashboard = () => {
       <Navigation 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        openUploadDialog={() => setIsUploadDialogOpen(true)}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -68,12 +65,6 @@ const Dashboard = () => {
           />
         </div>
       </main>
-
-      <PhotoUploadDialog
-        isOpen={isUploadDialogOpen}
-        onClose={() => setIsUploadDialogOpen(false)}
-        onSuccess={refetch}
-      />
     </div>
   );
 };

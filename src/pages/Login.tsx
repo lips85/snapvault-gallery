@@ -37,7 +37,20 @@ const Login = () => {
               }
             }
           }}
-          providers={[]}
+          localization={{
+            variables: {
+              sign_up: {
+                email_label: '이메일',
+                password_label: '비밀번호',
+                button_label: '회원가입',
+              },
+              sign_in: {
+                email_label: '이메일',
+                password_label: '비밀번호',
+                button_label: '로그인',
+              },
+            },
+          }}
         />
       </div>
     </div>
