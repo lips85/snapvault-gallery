@@ -8,14 +8,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check current session on component mount
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         navigate("/selection");
       }
     });
 
-    // Listen for auth state changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
@@ -24,16 +22,15 @@ const Login = () => {
       }
     });
 
-    // Cleanup subscription on unmount
     return () => subscription.unsubscribe();
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md space-y-8 p-8 bg-card rounded-lg shadow-lg animate-fadeIn">
+    <div className="min-h-screen flex items-center justify-center bg-[#fbfbfd]">
+      <div className="w-full max-w-md space-y-8 p-8 bg-white rounded-3xl shadow-lg animate-fadeIn">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground">SnapVault</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h2 className="text-4xl font-semibold text-[#1d1d1f] mb-2">SnapVault</h2>
+          <p className="text-[#86868b] text-lg">
             현장 사진을 관리하세요
           </p>
         </div>
@@ -44,11 +41,25 @@ const Login = () => {
             variables: {
               default: {
                 colors: {
-                  brand: '#000000',
-                  brandAccent: '#333333',
-                }
-              }
-            }
+                  brand: '#06c',
+                  brandAccent: '#007AFF',
+                  brandButtonText: 'white',
+                },
+                borderWidths: {
+                  buttonBorderWidth: '0px',
+                  inputBorderWidth: '1px',
+                },
+                radii: {
+                  borderRadiusButton: '12px',
+                  buttonBorderRadius: '12px',
+                  inputBorderRadius: '12px',
+                },
+              },
+            },
+            className: {
+              button: 'bg-[#06c] hover:bg-[#007AFF] text-white rounded-xl px-6 py-3',
+              input: 'rounded-xl border border-gray-200',
+            },
           }}
           providers={["google", "github"]}
           localization={{
