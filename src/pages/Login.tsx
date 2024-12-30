@@ -19,7 +19,7 @@ const Login = () => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         navigate("/selection");
       }
@@ -65,6 +65,7 @@ const Login = () => {
             },
           }}
           providers={["google", "github"]}
+          redirectTo="https://snapvault.life/selection"
           localization={{
             variables: {
               sign_up: {
