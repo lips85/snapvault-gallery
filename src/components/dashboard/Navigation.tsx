@@ -17,6 +17,13 @@ interface NavigationProps {
   openUploadDialog?: () => void;
 }
 
+interface UserMetadata {
+  avatar_url?: string;
+  email?: string;
+  full_name?: string;
+  name?: string;
+}
+
 export const Navigation = ({ searchQuery, setSearchQuery }: NavigationProps) => {
   const navigate = useNavigate();
 
@@ -32,9 +39,14 @@ export const Navigation = ({ searchQuery, setSearchQuery }: NavigationProps) => 
         .eq('id', user.id)
         .single();
       
+      const metadata = user.user_metadata as UserMetadata;
+      
       return {
         ...data,
-        ...user.user_metadata,
+        email: metadata.email,
+        name: metadata.name,
+        full_name: metadata.full_name,
+        created_at: user.created_at,
       };
     }
   });
@@ -94,11 +106,11 @@ export const Navigation = ({ searchQuery, setSearchQuery }: NavigationProps) => 
                       <div>
                         <dt className="text-muted-foreground">가입일</dt>
                         <dd className="font-medium">
-                          {new Date(profile?.created_at).toLocaleDateString('ko-KR', {
+                          {profile?.created_at ? new Date(profile.created_at).toLocaleDateString('ko-KR', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
-                          })}
+                          }) : '정보 없음'}
                         </dd>
                       </div>
                       {profile?.full_name && (
