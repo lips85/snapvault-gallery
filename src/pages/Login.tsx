@@ -81,7 +81,7 @@ const Login = () => {
           }}
           view="sign_in"
           showLinks={true}
-          redirectTo="https://preview--snapvault-gallery.lovable.app/selection"
+          redirectTo="https://snapvault.life/selection"
         />
       </div>
     </div>
