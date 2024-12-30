@@ -8,23 +8,23 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 초기 세션 확인
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         navigate("/selection");
       }
-    });
+    };
+    
+    checkSession();
 
-    // 인증 상태 변경 리스너
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session) {
         navigate("/selection");
       }
     });
 
-    // 컴포넌트 언마운트 시 리스너 제거
     return () => subscription.unsubscribe();
   }, [navigate]);
 
