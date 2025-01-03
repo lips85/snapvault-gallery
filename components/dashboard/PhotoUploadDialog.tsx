@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -5,15 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
+import { IPhotoUploadDialogProps } from "@/types";
 
-interface PhotoUploadDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDialogProps) => {
+export function PhotoUploadDialog({ isOpen, onClose, onSuccess }: IPhotoUploadDialogProps) {
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
   const [siteName, setSiteName] = useState("");
@@ -189,4 +186,4 @@ export const PhotoUploadDialog = ({ isOpen, onClose, onSuccess }: PhotoUploadDia
       </DialogContent>
     </Dialog>
   );
-};
+}
